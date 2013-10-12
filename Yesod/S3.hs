@@ -26,7 +26,8 @@ uploadFile conn fi bucket name = do
 getLink :: AWSConnection
         -> String -- ^ The Bucket Name
         -> String -- ^ The Object Name
+        -> Integer -- ^ Seconds the Link should be valid
         -> IO URI -- ^ IO is only used to get the current Time
-getLink conn bucket name = do
+getLink conn bucket name t = do
   let obj = S3Object bucket name "" [] empty
-  publicUriForSeconds conn obj 60
+  publicUriForSeconds conn obj t
