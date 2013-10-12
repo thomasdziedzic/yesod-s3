@@ -23,7 +23,7 @@ uploadImage :: AWSConnection
             -> String -- ^ The Bucket Name
             -> String -- ^ The Base Name
             -> [((Int,Int), Int, String)] -- ^ Styles for resizing, the ints are upper borders
-            -> IO [(String, String)]
+            -> IO [(String, String)] -- ^ Style and Object name
 uploadImage conn fi bucket name styles = do
   bs <- extractFile fi
   let ft = T.unpack $ fileContentType fi
