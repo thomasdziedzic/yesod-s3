@@ -25,4 +25,5 @@ library
     yesod-core,
     bytestring,
     text,
-    conduit >= 1.0.5
+    conduit >= 1.0.5,
+    network
