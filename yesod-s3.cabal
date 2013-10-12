@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                yesod-s3
-version:             0.0.0.0
+version:             0.1.0.0
 synopsis:            Simple Helper Library for using Amazon's Simple Storage Service (S3) with Yesod
 -- description:         
 homepage:            https://github.com/tvh/yesod-s3
