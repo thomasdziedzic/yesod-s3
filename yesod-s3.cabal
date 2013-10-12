@@ -25,4 +25,5 @@ library
     text,
     conduit >= 1.0.5,
     network,
-    gd
+    gd,
+    mtl
