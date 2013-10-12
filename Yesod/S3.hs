@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Yesod.S3 where
 
 import Data.ByteString.Lazy
@@ -29,5 +28,5 @@ getLink :: AWSConnection
         -> String -- ^ The Object Name
         -> IO URI -- ^ IO is only used to get the current Time
 getLink conn bucket name = do
-  let obj = S3Object bucket name "" [] ""
+  let obj = S3Object bucket name "" [] empty
   publicUriForSeconds conn obj 60
