@@ -3,7 +3,7 @@
 
 name:                yesod-s3
 version:             0.0.0.0
--- synopsis:            
+synopsis:            Simple Helper Library for using Amazon's Simple Storage Service (S3) with Yesod
 -- description:         
 homepage:            https://github.com/tvh/yesod-s3
 license:             MIT
