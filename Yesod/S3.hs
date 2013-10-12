@@ -1,4 +1,7 @@
-module Yesod.S3 where
+module Yesod.S3 (
+  uploadImage,
+  uploadFile,
+  getLink) where
 
 import Data.ByteString.Lazy
 import Yesod.Core.Types
@@ -9,9 +12,38 @@ import Network.AWS.AWSConnection
 import Network.AWS.AWSResult
 import Network.AWS.S3Object
 import qualified Data.Text as T
+import Graphics.GD.ByteString.Lazy
+import Data.Ratio
 
 extractFile :: FileInfo -> IO ByteString
 extractFile f = runResourceT $ fileSourceRaw f $$ sinkLbs
+
+uploadImage :: AWSConnection
+            -> FileInfo
+            -> String -- ^ The Bucket Name
+            -> String -- ^ The Base Name
+            -> [((Int,Int), Int, String)] -- ^ Styles for resizing, the ints are upper borders
+            -> IO [(String, String)]
+uploadImage conn fi bucket name styles = do
+  bs <- extractFile fi
+  let ft = T.unpack $ fileContentType fi
+  img <- case ft of
+    "image/png" -> loadPngByteString bs
+    "image/jpg" -> loadJpegByteString bs
+    "image/gif" -> loadGifByteString bs
+  (x,y) <- imageSize img
+  flip mapM styles $ \((x',y'),qual,style) -> do
+    let xscale = x' % x
+        yscale = y' % y
+        (x'',y'') = if xscale<yscale
+                      then (x', floor $ fromIntegral y * xscale)
+                      else (floor $ fromIntegral x * yscale, y')
+    img' <- resizeImage x'' y'' img
+    bs' <- saveJpegByteString qual img'
+    let name' = name ++ "-" ++ style
+        obj = S3Object bucket name' "image/jpg" [] bs'
+    sendObjectMIC conn obj
+    return (style, name')
 
 uploadFile :: AWSConnection
            -> FileInfo

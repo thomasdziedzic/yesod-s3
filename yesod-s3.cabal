@@ -24,4 +24,5 @@ library
     bytestring,
     text,
     conduit >= 1.0.5,
-    network
+    network,
+    gd
