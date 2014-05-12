@@ -15,6 +15,7 @@ import qualified Data.Text as T
 import Graphics.GD.ByteString.Lazy
 import Data.Ratio
 import Control.Monad.Error
+import Control.Monad.Trans.Resource
 
 extractFile :: FileInfo -> IO ByteString
 extractFile f = runResourceT $ fileSourceRaw f $$ sinkLbs
